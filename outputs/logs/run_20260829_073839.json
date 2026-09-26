@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-08-29T07:38:39",
+  "tool_calls": [
+    {
+      "agent": "image_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\image_features.npy",
+        "feature_vector_length": 1024,
+        "image_importance_weight": 0.9922,
+        "feature_summary": {
+          "mean": 0.3928,
+          "max": 4.6836,
+          "nonzero_count": 855
+        }
+      }
+    },
+    {
+      "agent": "clinical_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\clinical_features.npy",
+        "feature_vector_length": 64,
+        "clinical_importance_weight": 0.4661,
+        "input_values_used": {
+          "age": 54,
+          "gender": "male",
+          "fever": true,
+          "cough": true
+        }
+      }
+    },
+    {
+      "agent": "disease_prediction_agent",
+      "output": {
+        "predicted_class": "COVID",
+        "confidence_score": 0.5752,
+        "class_probabilities": {
+          "COVID": 0.5752,
+          "Lung_Opacity": 0.0003,
+          "NORMAL": 0.0,
+          "PNEUMONIA": 0.0001,
+          "TUBERCULOSIS": 0.4241
+        }
+      }
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "shap_image_path": "outputs\\shap_result.png",
+        "shap_values": {
+          "Age": -0.0006,
+          "Gender": -0.0026,
+          "Fever": 0.0015,
+          "Cough": 0.0006
+        },
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction. SHAP values show each clinical feature's contribution toward the 'COVID' prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "# Clinical Decision-Support Report: Multimodal Chest Disease Diagnosis\n\n## Patient Information & Clinical Inputs\n- **Age:** 54\n- **Gender:** Male\n- **Fever:** True\n- **Cough:** True\n- **X-Ray Image Path:** `uploads\\patient1_xray.jpeg`\n\n---\n\n## Diagnostic Prediction\n- **Predicted Disease:** **COVID**\n- **Confidence Score:** 57.52%\n- **Class Probabilities:**\n  - **COVID:** 57.52%\n  - **Tuberculosis:** 42.41%\n  - **Lung Opacity:** 0.03%\n  - **Pneumonia:** 0.01%\n  - **Normal:** 0.00%\n\n---\n\n## Agent Importance Weights\n- **Image Importance Weight:** 0.9922 (99.22%)\n- **Clinical Importance Weight:** 0.4661 (46.61%)\n\n> **Note on Agent Weights:** There is a noticeable difference between the image and clinical importance weights assigned by the adaptive importance gate. The model heavily weighted the chest X-ray features (99.22%) compared to the clinical indicators (46.61%), indicating that the visual patterns in the radiograph played a dominant role in driving the diagnosis.\n\n---\n\n## Explainability & Visual Evidence\n- **Grad-CAM Heatmap Path:** `outputs\\gradcam_result.png`\n- **SHAP Feature Importance Path:** `outputs\\shap_result.png`\n\n---\n\n## Plain-Language Clinician Summary\nThe multimodal diagnostic model has analyzed both the patient's chest X-ray and clinical presentation (age 54, male, presenting with fever and cough). The primary prediction is **COVID** with a confidence of 57.52%, closely followed by Tuberculosis (42.41%). \n\nThe adaptive importance gate heavily favored the image analysis (weight ~0.99) over the clinical history (weight ~0.47), meaning visual opacities or features detected in the radiograph were the primary driver of this classification. A Grad-CAM visual explanation has been successfully generated and saved to `outputs\\gradcam_result.png` to highlight the exact lung regions that contributed to this finding, and SHAP values are available in `outputs\\shap_result.png` for clinical review of symptom contributions. Clinicians should correlate these findings with viral PCR testing and clinical evaluation."
+    }
+  ]
+}

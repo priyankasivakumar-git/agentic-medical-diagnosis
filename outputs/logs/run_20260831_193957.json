@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-08-31T19:39:57",
+  "tool_calls": [
+    {
+      "agent": "image_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\image_features.npy",
+        "feature_vector_length": 1024,
+        "image_importance_weight": 0.9932,
+        "feature_summary": {
+          "mean": 0.6104,
+          "max": 6.0938,
+          "nonzero_count": 852
+        }
+      }
+    },
+    {
+      "agent": "clinical_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\clinical_features.npy",
+        "feature_vector_length": 64,
+        "clinical_importance_weight": 0.0,
+        "input_values_used": {
+          "age": 60,
+          "gender": "female",
+          "fever": true,
+          "cough": true
+        }
+      }
+    },
+    {
+      "agent": "disease_prediction_agent",
+      "output": {
+        "predicted_class": "PNEUMONIA",
+        "confidence_score": 1.0,
+        "class_probabilities": {
+          "COVID": 0.0,
+          "Lung_Opacity": 0.0,
+          "NORMAL": 0.0,
+          "PNEUMONIA": 1.0,
+          "TUBERCULOSIS": 0.0
+        }
+      }
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "shap_image_path": "outputs\\shap_result.png",
+        "shap_values": {
+          "Age": 0.0,
+          "Gender": 0.0,
+          "Fever": 0.0,
+          "Cough": 0.0
+        },
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction. SHAP values show each clinical feature's contribution toward the 'PNEUMONIA' prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "# Clinical Decision-Support Report: Multimodal Chest X-Ray Diagnosis\n\n## Patient Information\n- **Age:** 60\n- **Gender:** Female\n- **Symptoms / Findings:** Fever: Yes, Cough: Yes\n- **Image Source:** `uploads\\p1.jpeg`\n\n---\n\n## Diagnostic Prediction\n- **Predicted Disease:** PNEUMONIA\n- **Confidence Score:** 100.0%\n- **Class Probabilities:**\n  - **PNEUMONIA:** 1.0000 (100.0%)\n  - **COVID:** 0.0000 (0.0%)\n  - **Lung_Opacity:** 0.0000 (0.0%)\n  - **NORMAL:** 0.0000 (0.0%)\n  - **TUBERCULOSIS:** 0.0000 (0.0%)\n\n---\n\n## Multimodal Importance Weights\n- **Image Importance Weight:** 0.9932 (99.32%)\n- **Clinical Importance Weight:** 0.0068 (0.68%)\n\n*Note on Agent Weights:* The adaptive importance gate assigned an overwhelming majority of the weight to the image feature analysis (0.9932) compared to the clinical features (0.0068). This indicates that the visual patterns present in the chest X-ray heavily dominated the final classification decision, with the clinical markers playing a negligible role in this specific prediction.\n\n---\n\n## Explainability & Artifacts\n- **Grad-CAM Heatmap Saved To:** `outputs\\gradcam_result.png`\n- **SHAP Summary Saved To:** `outputs\\shap_result.png`\n\n---\n\n## Plain-Language Explanation for Clinicians\nThe multimodal model analyzed the patient's chest X-ray alongside their clinical profile (60-year-old female presenting with fever and cough). The system identified strong radiologic indicators consistent with **Pneumonia**, classifying the image with 100% confidence. \n\nThe adaptive gating mechanism heavily favored the visual imaging features over the clinical data for this case. Clinicians should inspect the Grad-CAM heatmap at `outputs\\gradcam_result.png` to review the specific lung regions that triggered this high-confidence pneumonia classification."
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+=== CUSTOM / TOP-LEVEL LAYERS (non-DenseNet-backbone) ===
+
+name=input_1                   type=InputLayer           out=[(None, 224, 224, 3)]  inputs_from=[]
+name=bn                        type=BatchNormalization   out=(None, 7, 7, 1024)  inputs_from=['conv5_block16_concat']
+name=relu                      type=Activation           out=(None, 7, 7, 1024)  inputs_from=['bn']
+name=input_2                   type=InputLayer           out=[(None, 4)]  inputs_from=[]
+name=global_average_pooling2d  type=GlobalAveragePooling2D out=(None, 1024)  inputs_from=['relu']
+name=dense_1                   type=Dense                out=(None, 64)  inputs_from=['input_2']
+name=dense                     type=Dense                out=(None, 1)  inputs_from=['global_average_pooling2d']
+name=dense_2                   type=Dense                out=(None, 1)  inputs_from=['dense_1']
+name=multiply                  type=Multiply             out=(None, 1024)  inputs_from=['global_average_pooling2d', 'dense']
+name=multiply_1                type=Multiply             out=(None, 64)  inputs_from=['dense_1', 'dense_2']
+name=concatenate               type=Concatenate          out=(None, 1088)  inputs_from=['multiply', 'multiply_1']
+name=dense_3                   type=Dense                out=(None, 128)  inputs_from=['concatenate']
+name=dropout                   type=Dropout              out=(None, 128)  inputs_from=['dense_3']
+name=dense_4                   type=Dense                out=(None, 5)  inputs_from=['dropout']

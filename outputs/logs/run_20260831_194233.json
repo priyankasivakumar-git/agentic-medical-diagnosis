@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-08-31T19:42:33",
+  "tool_calls": [
+    {
+      "agent": "image_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\image_features.npy",
+        "feature_vector_length": 1024,
+        "image_importance_weight": 0.9907,
+        "feature_summary": {
+          "mean": 0.3745,
+          "max": 6.0117,
+          "nonzero_count": 804
+        }
+      }
+    },
+    {
+      "agent": "clinical_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\clinical_features.npy",
+        "feature_vector_length": 64,
+        "clinical_importance_weight": 0.0,
+        "input_values_used": {
+          "age": 60,
+          "gender": "female",
+          "fever": true,
+          "cough": true
+        }
+      }
+    },
+    {
+      "agent": "disease_prediction_agent",
+      "output": {
+        "predicted_class": "TUBERCULOSIS",
+        "confidence_score": 1.0,
+        "class_probabilities": {
+          "COVID": 0.0,
+          "Lung_Opacity": 0.0,
+          "NORMAL": 0.0,
+          "PNEUMONIA": 0.0,
+          "TUBERCULOSIS": 1.0
+        }
+      }
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "shap_image_path": "outputs\\shap_result.png",
+        "shap_values": {
+          "Age": 0.0,
+          "Gender": 0.0,
+          "Fever": 0.0,
+          "Cough": 0.0
+        },
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction. SHAP values show each clinical feature's contribution toward the 'TUBERCULOSIS' prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "### Multimodal Chest Disease Diagnosis Report\n\n#### 1. Patient & Clinical Information\n* **Image Path:** `uploads\\T1.png`\n* **Age:** 60\n* **Gender:** Female\n* **Fever:** True\n* **Cough:** True\n\n---\n\n#### 2. Prediction Results\n* **Predicted Disease:** **TUBERCULOSIS**\n* **Confidence Score:** 100.0%\n* **Class Probabilities:**\n  * **TUBERCULOSIS:** 1.0000 (100.0%)\n  * **COVID:** 0.0000 (0.0%)\n  * **Lung_Opacity:** 0.0000 (0.0%)\n  * **NORMAL:** 0.0000 (0.0%)\n  * **PNEUMONIA:** 0.0000 (0.0%)\n\n---\n\n#### 3. Multimodal Analysis & Feature Importance Weights\n* **Image Importance Weight:** `0.9907` (99.07%)\n* **Clinical Importance Weight:** `0.0000` (0.00%)\n* *Note on Weight Disagreement:* The adaptive importance gate heavily favored the chest X-ray features (99.07%) over the clinical features (0.00%) for this specific case, meaning the model's high confidence in Tuberculosis is almost entirely driven by the visual patterns identified in the radiograph.\n\n---\n\n#### 4. Explainability Outputs\n* **Grad-CAM Heatmap Path:** `outputs\\gradcam_result.png`\n* **SHAP Values Plot Path:** `outputs\\shap_result.png`\n\n---\n\n#### 5. Plain-Language Clinician Summary\nThe multimodal diagnostic pipeline evaluated the patient's chest X-ray alongside clinical indicators (age 60, female, positive fever and cough). The model classified the case as **TUBERCULOSIS** with absolute confidence (1.0). \n\nThe adaptive importance gate assigned nearly all decision-making weight (99.07%) to the image analysis agent, indicating that specific radiographic findings in `uploads\\T1.png` were overwhelmingly indicative of tuberculosis. The generated Grad-CAM heatmap (`outputs\\gradcam_result.png`) highlights the precise lung regions that drove this classification, allowing for visual verification by attending physicians."
+    }
+  ]
+}

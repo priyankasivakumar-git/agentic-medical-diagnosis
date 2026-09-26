@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-09-01T08:33:26",
+  "tool_calls": [
+    {
+      "agent": "image_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\image_features.npy",
+        "feature_vector_length": 1024,
+        "image_importance_weight": 0.9741,
+        "feature_summary": {
+          "mean": 0.3213,
+          "max": 2.3887,
+          "nonzero_count": 852
+        }
+      }
+    },
+    {
+      "agent": "clinical_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\clinical_features.npy",
+        "feature_vector_length": 64,
+        "clinical_importance_weight": 0.0,
+        "input_values_used": {
+          "age": 63,
+          "gender": "female",
+          "fever": true,
+          "cough": false
+        }
+      }
+    },
+    {
+      "agent": "disease_prediction_agent",
+      "output": {
+        "predicted_class": "Lung_Opacity",
+        "confidence_score": 0.8135,
+        "class_probabilities": {
+          "COVID": 0.1858,
+          "Lung_Opacity": 0.8135,
+          "NORMAL": 0.0001,
+          "PNEUMONIA": 0.0003,
+          "TUBERCULOSIS": 0.0005
+        }
+      }
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "shap_image_path": "outputs\\shap_result.png",
+        "shap_values": {
+          "Age": 0.0163,
+          "Gender": 0.0013,
+          "Fever": -0.0007,
+          "Cough": 0.0007
+        },
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction. SHAP values show each clinical feature's contribution toward the 'Lung_Opacity' prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "# Multimodal Chest Disease Diagnosis - Final Report\n\n## Patient Information & Clinical Findings\n- **Image Path:** `uploads\\WhatsApp Image 2026-08-31 at 10.21.02 PM.jpeg`\n- **Age:** 63\n- **Gender:** Female\n- **Fever:** True\n- **Cough:** False\n\n---\n\n## Model Prediction & Probabilities\n- **Predicted Disease:** **Lung_Opacity**\n- **Confidence Score:** 81.35%\n- **Class Probabilities:**\n  - **COVID:** 18.58%\n  - **Lung_Opacity:** 81.35%\n  - **NORMAL:** 0.01%\n  - **PNEUMONIA:** 0.03%\n  - **TUBERCULOSIS:** 0.05%\n\n---\n\n## Modality Importance Weights\n- **Image Analysis Importance Weight:** `0.9741` (97.41%)\n- **Clinical Analysis Importance Weight:** `0.0000` (0.00%)\n\n> **Note on Modality Disagreement:** There is a significant divergence in the importance weights assigned by the adaptive importance gates. The model heavily relied on the visual features extracted from the chest X-ray (97.41%) while assigning near-zero weight to the clinical features. This indicates that the radiographic patterns present in the X-ray played a dominant role in driving the prediction.\n\n---\n\n## Explainability & Visual Evidence\n- **Grad-CAM Heatmap Path:** `outputs\\gradcam_result.png`\n- **SHAP Feature Importance Plot Path:** `outputs\\shap_result.png`\n\n### Clinician-Facing Summary\nThe multimodal diagnostic system evaluated the patient's chest X-ray alongside clinical attributes (63-year-old female presenting with fever and no cough). The model classified the case as **Lung_Opacity** with an 81.35% confidence score. \n\nThe adaptive importance gate assigned overwhelming weight (approx. 97.4%) to the image analysis agent, indicating that radiographic findings in the lung fields were the primary driver of the diagnosis, outweighing the clinical inputs. The Grad-CAM heatmap (`outputs\\gradcam_result.png`) highlights the specific opacity regions in the chest X-ray that contributed to this classification, providing visual support for clinical review."
+    }
+  ]
+}

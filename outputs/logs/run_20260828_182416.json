@@ -1,0 +1,57 @@
+{
+  "timestamp": "2026-08-28T18:24:16",
+  "tool_calls": [
+    {
+      "agent": "image_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\image_features.npy",
+        "feature_vector_length": 1024,
+        "image_importance_weight": 0.9922,
+        "feature_summary": {
+          "mean": 0.3928,
+          "max": 4.6836,
+          "nonzero_count": 855
+        }
+      }
+    },
+    {
+      "agent": "clinical_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\clinical_features.npy",
+        "feature_vector_length": 64,
+        "clinical_importance_weight": 0.4661,
+        "input_values_used": {
+          "age": 54,
+          "gender": "male",
+          "fever": true,
+          "cough": true
+        }
+      }
+    },
+    {
+      "agent": "disease_prediction_agent",
+      "output": {
+        "predicted_class": "COVID",
+        "confidence_score": 0.5752,
+        "class_probabilities": {
+          "COVID": 0.5752,
+          "Lung_Opacity": 0.0003,
+          "NORMAL": 0.0,
+          "PNEUMONIA": 0.0001,
+          "TUBERCULOSIS": 0.4241
+        }
+      }
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "# Multimodal Chest Disease Diagnosis Report\n\n### **Patient Information**\n* **Age:** 54\n* **Gender:** Male\n* **Fever:** Present (True)\n* **Cough:** Present (True)\n\n---\n\n### **Diagnostic Summary**\n* **Predicted Condition:** **COVID-19**\n* **Confidence Score:** **57.52%**\n\n---\n\n### **Class Probabilities**\n* **COVID-19:** 57.52%\n* **Tuberculosis (TUBERCULOSIS):** 42.41%\n* **Lung Opacity:** 0.03%\n* **Pneumonia:** 0.01%\n* **Normal:** 0.00%\n\n---\n\n### **Multimodal Feature Importance Weights**\n* **Image Analysis Weight:** **0.9922** (99.22%)\n* **Clinical Analysis Weight:** **0.4661** (46.61%)\n\n* **Clinical Note on Feature Discrepancy:**  \n  There is a pronounced weighting differential between modalities: visual features from the chest X-ray heavily dominated the model's decision-making process (importance weight ~0.99), whereas clinical indicators contributed secondary contextual weighting (~0.47). The model indicates significant visual radiographic patterns consistent with COVID-19, though Tuberculosis remains a notable differential diagnosis (42.41%).\n\n---\n\n### **Visual Explainability (Grad-CAM)**\n* **Heatmap Location:** `outputs\\gradcam_result.png`\n* Visual explanation heatmap generated highlighting specific regions of the chest X-ray that most influenced the classification decision.\n\n---\n\n### **Clinician Summary**\nThe model predicts **COVID-19** with a **57.52%** probability based primarily on radiographic chest features extracted from the input X-ray, supported by clinical presentation of fever and cough. Due to an overlapping visual feature distribution, **Tuberculosis** presents as a secondary differential consideration at **42.41%**. Clinical correlation, follow-up PCR testing for SARS-CoV-2, and potential sputum smear/culture or further radiological evaluation are recommended to confirm diagnosis."
+    }
+  ]
+}

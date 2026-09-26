@@ -1,0 +1,64 @@
+{
+  "timestamp": "2026-09-06T16:45:24",
+  "tool_calls": [
+    {
+      "agent": "image_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\image_features.npy",
+        "feature_vector_length": 1024,
+        "image_importance_weight": 0.9888,
+        "feature_summary": {
+          "mean": 0.3716,
+          "max": 3.7676,
+          "nonzero_count": 857
+        }
+      }
+    },
+    {
+      "agent": "clinical_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\clinical_features.npy",
+        "feature_vector_length": 64,
+        "clinical_importance_weight": 0.0003,
+        "input_values_used": {
+          "age": 39,
+          "gender": "female",
+          "fever": false,
+          "cough": true
+        }
+      }
+    },
+    {
+      "agent": "disease_prediction_agent",
+      "output": {
+        "predicted_class": "TUBERCULOSIS",
+        "confidence_score": 0.9761,
+        "class_probabilities": {
+          "COVID": 0.0222,
+          "Lung_Opacity": 0.0007,
+          "NORMAL": 0.0002,
+          "PNEUMONIA": 0.0008,
+          "TUBERCULOSIS": 0.9761
+        }
+      }
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "shap_image_path": "outputs\\shap_result.png",
+        "shap_values": {
+          "Age": 0.0014,
+          "Gender": -0.0002,
+          "Fever": 0.0001,
+          "Cough": -0.0001
+        },
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction. SHAP values show each clinical feature's contribution toward the 'TUBERCULOSIS' prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "### Multimodal Chest Disease Diagnosis Report\n\n#### Patient Information & Clinical Summary\n* **Age:** 39\n* **Gender:** Female\n* **Symptoms:** Cough (Present), Fever (Absent)\n* **Image Path:** `uploads\\test2.png`\n\n---\n\n#### Diagnostic Prediction Results\n* **Predicted Disease:** **TUBERCULOSIS**\n* **Confidence Score:** 97.61%\n* **Class Probabilities:**\n  * **Tuberculosis:** 97.61%\n  * **COVID-19:** 2.22%\n  * **Pneumonia:** 0.08%\n  * **Lung Opacity:** 0.07%\n  * **Normal:** 0.02%\n\n---\n\n#### Multimodal Importance Weights & Disagreement Analysis\n* **Image Importance Weight:** 0.9888 (98.88%)\n* **Clinical Importance Weight:** 0.0003 (0.03%)\n\n**Notable Observation (Agent Disagreement):** \nThere is a profound weighting asymmetry between modalities. The adaptive importance gate assigned almost total reliance to the chest X-ray features (98.88%) while assigning near-zero weight to the clinical features (0.03%). This indicates that the visual patterns present in the radiograph heavily dominated the final classification decision, rendering the patient's clinical symptoms secondary in this specific inference.\n\n---\n\n#### Explainability & Artifacts\n* **Grad-CAM Heatmap:** Saved successfully to `outputs\\gradcam_result.png` (highlights the specific pulmonary regions driving the model's high confidence in Tuberculosis).\n* **SHAP Values Visualization:** Saved successfully to `outputs\\shap_result.png` (details the minimal directional contributions of age, gender, cough, and fever).\n\n---\n\n#### Plain-Language Clinician Summary\nThe deep learning diagnostic pipeline analyzed both the patient's chest X-ray and clinical profile (39-year-old female with a cough and no fever), predicting **Tuberculosis** with high confidence (97.61%). \n\nThe model's adaptive weighting heavily favored the imaging findings (importance weight ~0.99) over the tabular clinical indicators. Clinicians should review the accompanying Grad-CAM heatmap (`outputs\\gradcam_result.png`) to inspect the specific lung opacities or structural abnormalities on the radiograph that triggered this classification, correlating them directly with standard diagnostic tests (such as sputum smear, molecular testing, or clinical history) before confirming a treatment plan."
+    }
+  ]
+}

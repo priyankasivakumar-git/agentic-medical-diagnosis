@@ -1,0 +1,6 @@
+Image: samples/patient1_xray.jpeg
+Age: 54
+Gender: male
+Fever: True
+Cough: True
+Generated: 2026-09-01T19:52:07

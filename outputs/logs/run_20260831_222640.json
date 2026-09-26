@@ -1,0 +1,82 @@
+{
+  "timestamp": "2026-08-31T22:26:40",
+  "tool_calls": [
+    {
+      "agent": "image_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\image_features.npy",
+        "feature_vector_length": 1024,
+        "image_importance_weight": 0.9741,
+        "feature_summary": {
+          "mean": 0.3213,
+          "max": 2.3887,
+          "nonzero_count": 852
+        }
+      }
+    },
+    {
+      "agent": "clinical_analysis_agent",
+      "output": {
+        "feature_path": "outputs\\clinical_features.npy",
+        "feature_vector_length": 64,
+        "clinical_importance_weight": 0.0068,
+        "input_values_used": {
+          "age": 25,
+          "gender": "male",
+          "fever": false,
+          "cough": true
+        }
+      }
+    },
+    {
+      "agent": "disease_prediction_agent",
+      "output": {
+        "predicted_class": "Lung_Opacity",
+        "confidence_score": 0.8057,
+        "class_probabilities": {
+          "COVID": 0.1936,
+          "Lung_Opacity": 0.8057,
+          "NORMAL": 0.0001,
+          "PNEUMONIA": 0.0003,
+          "TUBERCULOSIS": 0.0005
+        }
+      }
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "shap_image_path": "outputs\\shap_result.png",
+        "shap_values": {
+          "Age": 0.0097,
+          "Gender": -0.0008,
+          "Fever": 0.0012,
+          "Cough": -0.0003
+        },
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction. SHAP values show each clinical feature's contribution toward the 'Lung_Opacity' prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "# Clinical Decision-Support Report: Multimodal Chest X-Ray & Patient Data Analysis\n\n---\n\n## 1. Patient Demographics & Clinical Presentation\n- **Age:** 25 years\n- **Gender:** Male\n- **Symptoms:** Cough (Present), Fever (Absent)\n- **Image Path:** `uploads\\WhatsApp Image 2026-08-31 at 10.21.02 PM.jpeg`\n\n---\n\n## 2. Diagnosis & Prediction Results\n- **Predicted Disease:** **Lung_Opacity**\n- **Confidence Score:** **80.57%**\n- **Class Probabilities:**\n  - **Lung_Opacity:** `80.57%`\n  - **COVID:** `19.36%`\n  - **TUBERCULOSIS:** `0.05%`\n  - **PNEUMONIA:** `0.03%`\n  - **NORMAL:** `0.01%`\n\n---\n\n## 3. Multimodal Attention Weights (Image vs. Clinical)\n- **Image Importance Weight:** `97.41%` (0.9741)\n- **Clinical Importance Weight:** `0.68%` (0.0068)\n\n*Note of Interest:* There is a significant discrepancy between the image and clinical importance weights. The adaptive importance gate heavily favored the chest X-ray features (97.41%) over the clinical history (0.68%). This indicates that the visual patterns present in the radiograph were the primary driver behind the model's classification, with patient symptoms contributing minimally to the final decision.\n\n---\n\n## 4. Explainability & Visual Artifacts\n- **Grad-CAM Heatmap Path:** `outputs\\gradcam_result.png`\n- **SHAP Feature Importance Path:** `outputs\\shap_result.png`\n\n---\n\n## 5. Plain-Language Clinician Summary\nBased on the AI-assisted multimodal analysis, the model predicts **Lung_Opacity** with a confidence of **80.57%**. \n\nThe diagnosis was driven overwhelmingly by visual findings in the chest X-ray rather than the patient's reported symptoms (cough without fever), as reflected by the high image importance weight (97.41%). The Grad-CAM heatmap (`outputs\\gradcam_result.png`) highlights the specific lung regions on the radiograph that influenced this classification, allowing clinicians to visually inspect and verify the regions of concern. Clinicians should correlate these imaging opacities with physical exam findings and consider further diagnostic workup to rule out secondary etiologies."
+    },
+    {
+      "agent": "explainability_agent",
+      "output": {
+        "gradcam_image_path": "outputs\\gradcam_result.png",
+        "shap_image_path": "outputs\\shap_result.png",
+        "shap_values": {
+          "Age": 0.0097,
+          "Gender": -0.0008,
+          "Fever": 0.0012,
+          "Cough": -0.0003
+        },
+        "explanation_summary": "Grad-CAM heatmap generated highlighting the image regions most influential to the prediction. SHAP values show each clinical feature's contribution toward the 'Lung_Opacity' prediction."
+      }
+    },
+    {
+      "agent": "final_report",
+      "output": "# Multimodal Chest Disease Diagnosis Report\n\n## Patient Profile & Clinical Data\n* **Age:** 25\n* **Gender:** Male\n* **Symptoms:** Fever: No, Cough: Yes\n* **X-Ray Image:** `uploads\\WhatsApp Image 2026-08-31 at 10.21.02 PM.jpeg`\n\n---\n\n## Prediction Summary\n* **Predicted Disease:** **Lung_Opacity**\n* **Confidence Score:** 80.57%\n\n### Class Probabilities\n* **Lung_Opacity:** 80.57%\n* **COVID:** 19.36%\n* **TUBERCULOSIS:** 0.05%\n* **PNEUMONIA:** 0.03%\n* **NORMAL:** 0.01%\n\n---\n\n## Multimodal Importance Weights\n* **Image Importance Weight:** `0.9741` (97.41%)\n* **Clinical Importance Weight:** `0.0068` (0.68%)\n\n> **Note on Weight Disagreement:** There is a significant divergence between the image and clinical importance weights. The adaptive gate heavily favors the chest X-ray features (97.4%) while heavily discounting the clinical parameters (0.68%). This indicates that the visual patterns present in the chest X-ray dominate the final classification decision for this case.\n\n---\n\n## Explainability & Artifacts\n* **Grad-CAM Heatmap Saved To:** `outputs\\gradcam_result.png`\n* **SHAP Feature Importance Plot Saved To:** `outputs\\shap_result.png`\n\n---\n\n## Plain-Language Explanation for Clinicians\nThe multimodal diagnosis model has predicted **Lung_Opacity** with a high confidence of **80.57%**, alongside a secondary probability for COVID-19 (19.36%). \n\nThe adaptive importance gate determined that the visual features extracted from the chest X-ray were overwhelmingly more influential ($97.41\\%$) in driving this classification than the patient's clinical history ($0.68\\%$, which included a non-fever, coughing presentation in a 25-year-old male). Clinicians should review the Grad-CAM heatmap located at `outputs\\gradcam_result.png` to inspect the exact lung regions that contributed to the lung opacity finding, while correlating these findings with physical examination and further diagnostic testing."
+    }
+  ]
+}
